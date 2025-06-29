@@ -1,22 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Message</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Edit Message</title>
+  <link rel="stylesheet" href="/editChat.css" />
 </head>
 <body>
-    <h2>Edit Message : </h2>
-    <p>You are going to edit this chat : <%= chat._id %> </p>
+  <div class="container">
+    <h2>Edit Message</h2>
 
-    <p>This message was sent by <b> <%= chat.from %> </b> to <b> <%= chat.to %> </b> </p>
+    <p class="info">
+      You are editing chat ID: <code><%= chat._id %></code>
+    </p>
+    <p class="info">
+      Sent by <strong><%= chat.from %></strong> to <strong><%= chat.to %></strong>
+    </p>
 
-    <form action="/chats/<%= chat._id %>?_method=PUT" method="post">
-        <textarea name="message" placeholder="Your message goes here..." rows="5" cols="40"> <%= chat.message %> </textarea>
-
-        <br>
-
-        <button>Edit Message</button>
+    <form action="/chats/<%= chat._id %>?_method=PUT" method="post" class="edit-form">
+      <textarea name="message" placeholder="Edit your message..." required><%= chat.message %></textarea>
+      <button type="submit">Update Message</button>
     </form>
+  </div>
 </body>
 </html>
