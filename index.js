@@ -31,3 +31,58 @@ main()
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
 });
+
+app.get("/", async (req, res) => {
+    let chats = await Chat.find();
+    res.render("index.ejs", { chats });
+});
+
+app.get("/chats/new", (req, res) => {
+    res.render("newChat.ejs");
+});
+
+app.post("/", (req, res) => {
+    let { from, message, to } = req.body;
+
+    let newChat = new Chat({
+        from: from,
+        message: message,
+        to: to,
+        created_at: new Date()
+    });
+
+    newChat.save()
+        .then((res) => {
+            console.log("Chat created successfully!!");
+        })
+
+        .catch((err) => {
+            console.log("Something went wrong!!");
+        });
+
+    res.redirect("/");
+});
+
+app.get("/chats/:id/edit", async (req, res) => {
+    let { id } = req.params;
+    let chat = await Chat.findById(id);
+    res.render("editChat.ejs", { chat });
+});
+
+app.put("/chats/:id", async (req, res) => {
+    let { id } = req.params;
+    let {message: newMessage} = req.body;
+
+    let updatedChat = await Chat.findByIdAndUpdate(id, { message: newMessage }, { runValidators: true, new: true });
+
+    console.log(updatedChat);
+
+    res.redirect("/");
+});
+
+app.delete("/chats/:id", async (req, res) => {
+    let { id } = req.params;
+    let deletedChat = await Chat.findByIdAndDelete(id);
+    console.log(deletedChat);
+    res.redirect("/");
+});
