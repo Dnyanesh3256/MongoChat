@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MongoChat Homepage</title>
+  <link rel="stylesheet" href="index.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>MongoChat 💬</h1>
+    <p class="subtext">A real-time chat app built with Express.js, MongoDB, and EJS, supporting CRUD operations.</p>
+
+    <form action="/chats/new" method="get" class="new-chat-form">
+      <button class="new-chat-btn">Create New Chat</button>
+    </form>
+
+    <div class="chats">
+      <% for(let chat of chats) { %>
+        <div class="chat-card">
+          <p><strong>From:</strong> <%= chat.from %></p>
+          <p class="message"><%= chat.message %></p>
+          <p><strong>To:</strong> <%= chat.to %></p>
+          
+          <div class="chat-actions">
+            <form action="/chats/<%= chat._id %>/edit" method="get">
+              <button class="edit-btn">Edit Message</button>
+            </form>
+            <form action="/chats/<%= chat._id %>?_method=DELETE" method="post">
+              <button class="delete-btn">Delete Chat</button>
+            </form>
+          </div>
+
+          <div class="chat-time">
+            <p><%= chat.created_at.toString().split(" ")[4] %></p>
+            <p><%= chat.created_at.toString().split(" ").slice(0, 4).join("-") %></p>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</body>
+</html>
